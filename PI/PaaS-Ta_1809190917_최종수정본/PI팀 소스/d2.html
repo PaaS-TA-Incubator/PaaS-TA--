@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>학술논문 검색 키워드 분석</title>
+<link rel="stylesheet" type="text/css" href="resources/css/base_style.css"/>
+<link rel="stylesheet" type="text/css" href="resources/css/modal_1200_640.css"/>
+<link rel="stylesheet" type="text/css" href="resources/lib/ax5ui-grid/ax5grid.css"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript" src="resources/lib/jquery-3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="resources/lib/createjs/createjs-2015.11.26.min.js"></script>
+<script type="text/javascript" src="resources/lib/ax5ui-grid/ax5core.min.js"></script>
+<script type="text/javascript" src="resources/lib/ax5ui-grid/ax5grid.js"></script>
+<script type="text/javascript" src="resources/lib/jqcloud-1.0.4/jqcloud-1.0.4.js"></script>
+<script type="text/javascript" src="resources/data/scholar_join.js"></script>
+<script type="text/javascript" src="resources/data/keyword.js"></script>
+<script type="text/javascript" src="resources/js/Kmap_canvas3.js"></script>
+<script type="text/javascript" src="resources/js/control2.js"></script>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <div class="head_navi" id="hd_logo"><img src="resources/images/logo01.png" width=190></div>
+        <div class="head_navi" id="hd_title"><img src="resources/images/title2.png"></div>
+        <div class="head_navi" id="hd_navi">
+        <ul id="nav">
+            <li><input class="topNavi" type="button" onclick="window.location.href='d1.html'" value="전국 도서관 현황"></li>
+            <li><input class="topNavi_on" type="button" onclick="window.location.href='#'" value="학위논문 검색"></li>
+        </ul>      
+        </div>
+    </div>
+	<div id="canvasContainer" align="center">
+        <div style="width:1830px; height: 861px; margin-top:0px; border:0px solid #ff0000;">
+            <div style="position:absolute; width:538px; height: 781px; margin-top:40px; margin-left:0px; border:0px solid #ff0000;">
+                    <canvas id="cvs_map" width="538" height="781" style="border:0px solid #444444;"></canvas>
+            </div>
+            <div style="position:absolute; width: 1252px;; height: 781px; margin-top:40px; margin-left:568px; border:0px solid #ff0000;">
+                <div style="position:absolute; width:1252px; height: 750px; margin-top:0px; margin-left:0px; border:0px solid #ff0000;">
+                <ul id="nav">
+                    <li>&nbsp;&nbsp;</li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('all');" value="전체" id="all"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('0');" value="강원" id="area0"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('1');" value="경기" id="area1"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('2');" value="경남" id="area2"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('3');" value="경북" id="area3"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('4');" value="광주" id="area4"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('5');" value="대구" id="area5"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('6');" value="대전" id="area6"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('7');" value="부산" id="area7"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('8');" value="서울" id="area8"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('10');" value="울산" id="area10"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('11');" value="인천" id="area11"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('12');" value="전남" id="area12"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('13');" value="전북" id="area13"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('14');" value="제주" id="area14"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('15');" value="충남" id="area15"></li>
+                    <li><input class="button gray" type="button" onclick="buttonClick('16');" value="충북" id="area16"></li>
+                </ul>
+                </div>
+                <div style="position:absolute; width:1250px; height: 396px; margin-top:34px;margin-left:0px; border:1px solid #33FFFF; border-radius: 0.5em; background-color:#0CC2D0"></div>
+                <div data-ax5grid="areaGrid" style="position:absolute;  width:1238px; height: 384px; margin-top:41px; margin-left:7px;"></div>
+                <div id="my_favorite_latin_words" style="position:absolute; width: 450px; height: 318px; margin-top:462px; margin-left:0px; border:1px solid #33FFFF; border-radius: 0.5em; background-color:#333333">
+                </div>
+                <div style="position:absolute; width:770px; height: 318px; margin-top:462px; margin-left:480px; border:1px solid #33FFFF; border-radius: 0.5em; background-color:#333333">
+                        <canvas id="cvs_bar" width="770" height="318"></canvas>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="modalClose">&times;</span>
+                <p>title</p>
+                <p id="modalTable"></p>  
+            </div>
+        </div>
+        <div id="footer"></div>
+</div>
+</body>
+</html>
