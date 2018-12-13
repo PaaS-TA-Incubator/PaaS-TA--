@@ -1,0 +1,20 @@
+{
+  "orgs": [
+    {
+      "id": "111111111",
+      "label": "정부조직도",
+      "desc": "정부조직도 입니다.",
+      "url": "http://www.sample.com",
+      "created": "2015-11-01",
+      "updated": "2015-11-01"
+    }, 
+    {
+      "id": "222222222",
+      "label": "조직도2",
+      "desc": "조직도2 입니다.",
+      "url": "http://www.sample1.com",
+      "created": "2015-11-01",
+      "updated": "2015-11-01"
+    }
+  ]
+}

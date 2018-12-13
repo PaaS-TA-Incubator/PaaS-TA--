@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+    <title>조직관리</title>
+
+    <!-- 부트스트랩 -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/manage.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+    <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-file.js"></script>
+    <!-- JSRender, JSViews -->
+    <script src="/js/jsviews.js"></script>
+    <script src="/js/js.cookie.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/manage.js"></script>
+
+  </head>
+  <body>
+
+    <!-- 조직 목록 템플릿 -->
+    <script id="orgsTemplate" type="text/x-jsrender">
+    <div class="list-item">
+        - {{:label}} <span class="pull-right"><i id="btn_home" class="fa fa-home btn"></i><i id="btn_removeOrg" class="fa fa-times btn" ></i></span>
+    </div>
+    </script>
+
+    <!--하위 조직 템플릿-->
+    <script id="groupsTemplate" type="text/x-jsrender">
+    <tr>
+        <td>{{:parentLabel}}</td>
+        <td>{{:label}}</td>
+        <td>{{:desc}}</td>
+        <td data-id="{{:id}}"><i id="btn_modify" class="fa fa-pencil btn" ></i><i id="btn_del" class="fa fa-trash-o btn" ></i></td>
+    </tr>
+    </script>
+
+    <!-- 페이지 템플릿 -->
+    <script id="pageTemplate" type="text/x-jsrender">
+    <li><a href="" data-page="{{:page}}">{{:label}}</a></li>
+    </script>
+
+    <!-- 상위조직 드롭다운 템플릿 -->
+    <script id="parentsTemplate" type="text/x-jsrender">
+    <option value="{{:id}}">{{:label}}</option>
+    </script>
+
+    <div class="navbar-default bg-blue">
+        <div class="container-fluid">
+            <div class="row" style="padding:15px;">
+                <div class="navbar-header col-md-3 header-left">
+                    조직 관리 (Node.js 샘플)
+                </div>
+                <div class="col-md-9 header-right" style="font-size:15px; font-weight:bold;">
+                    <button id = "logout" type="button" class="btn bg-blue text-orange pull-right">
+                        <span class="glyphicon glyphicon-log-out"></span> <span style="vertical-align:super;"> 로그아웃</span>
+                    </button>
+                    <select id="dbType" class="form-control dbType pull-right">
+                        <option value="mysql">Mysql</option>
+                        <option value="cubrid">Cubrid</option>
+                        <option value="mongo">Mongo DB</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="body-container" class="container-fluid">
+      <div class="row" >
+        <div id="body-left" class="col-md-3 body-left">
+            <div class="list-head">
+                조직도 목록 <i id="btn_addOrg" class="fa fa-plus pull-right btn" ></i>
+            </div>
+            <div id="orgsResult">
+            </div>
+            <div id="orgsNotFound" class="list-footer">
+                등록한 조직도가 없습니다.<br />
+                조직도를 등록해 주십시오.
+            </div>
+        </div>
+        <div id="body-right" class="col-md-9 body-right">
+            <div id="manage" >
+                <div class="header">
+                    <div class="content">
+                        <span class="title">조직도 관리</span> <span class="description">- 조직도를 추가하거나 편집 또는 삭제할 수 있습니다.</span>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="alert alert-warning alert-dismissible col-md-11" role="alert">
+                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                            <i class="fa fa-exclamation-circle"></i> Warning<br/>
+                            좌측 메뉴에서 조직도를 추가하거나 조직도를 선택하여 편집할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add" >
+                <div class="header">
+                    <div class="content">
+                        <span class="title">조직도 추가</span> <span class="description">- 조직도를 추가합니다.</span>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">
+                                    <span class="title">조직도 정보 입력</span> <span class="description">*표시 항목은 필수 입력란 입니다.</span>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label for="orgLabel" class="col-md-3 control-label"><span style="color:#FF0000">*</span> 조직 이름</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="orgLabel" placeholder="조직 이름을 입력해 주십시오.">
+                                                    <div  style="display:none;" id="orgLabelAlert" class="alert alert-danger" role="alert" data-dismiss="alert">
+                                                        조직 이름을 입력해 주십시오.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orgUrl" class="col-md-3 control-label"> 조직 홈페이지</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="orgUrl">
+                                                </div>
+                                            </div>
+                                            <div class="form-group margin-side-no">
+                                                <div class="col-md-12">
+                                                    <button id="btn_addOrg" class="btn btn-blue pull-right ">추가</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modify" >
+                <div class="header">
+                    <div class="content">
+                        <span class="title">조직도 편집</span> <span class="description">- 조직도 정보와 하위 조직을 편집할 수 있습니다.</span>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="panel panel-default">
+                                <div class="panel-heading ">
+                                    <span class="title">조직도 정보 입력</span> <span class="description">*표시 항목은 필수 입력란 입니다.</span>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label for="orgLabel" class="col-md-3 control-label"><span style="color:#FF0000">*</span> 조직 이름</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="orgLabel" placeholder="조직 이름을 입력해 주십시오.">
+                                                    <div  style="display:none;" id="orgLabelAlert" class="alert alert-danger" role="alert" data-dismiss="alert">
+                                                        조직 이름을 입력해 주십시오.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orgUrl" class="col-md-3 control-label">조직 홈페이지</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control" id="orgUrl">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="title">하위 조직 목록</span>
+                                    <button id="btn_addGroup" class="btn btn-md pull-right">하위 조직 추가</button>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>상위 조직</th>
+                                            <th>이름</th>
+                                            <th>설명</th>
+                                            <th>수정/삭제</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="groupsResult">
+                                    </tbody>
+                                </table>
+                                <div class="panel-footer">
+                                    <nav>
+                                        <ul class="pagination" id="pageResult">
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <button id="btn_modifyOrg" class="btn btn-blue btn-long pull-right ">저장</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 추가 및 수정모달-->
+    <div class="modal fade" id="groupModal" tabIndex="-1" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ><span>&times;</span></button>
+                    <h5 class="modal-title" ><strong>하위 조직 추가</strong></h5>
+                </div>
+                <div class="modal-body add-org">
+                    <form id="groupForm" class="form-horizontal">
+                        <input type="hidden" id="groupOrg" name="org_id" />
+                        <div class="form-group">
+                            <label for="inputParent" class="col-sm-2 control-label">상위조직</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="groupParent" name="parent_id">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="groupLabel" class="col-sm-2 control-label"><span style="color:#FF0000;">*</span> 조직이름</label>
+                            <div class="col-sm-10">
+                                <input type="input" class="form-control" id="groupLabel" name="label" placeholder="조직 이름을 입력해 주십시오.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="groupUrl" class="col-sm-2 control-label">홈페이지</label>
+                            <div class="col-sm-10">
+                                <input type="input" class="form-control" id="groupUrl" name="url">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="groupDesc" class="col-sm-2 control-label">조직설명</label>
+                            <div class="col-sm-10">
+                                <textarea rows="5" class="form-control" id="groupDesc" name="desc"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputFile" class="col-sm-2 control-label">썸네일</label>
+                            <div class="col-sm-10 ">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="inputFile" readonly name="thumb_img_name">
+                                    <span class="input-group-btn">
+                                        <span class="btn btn-default btn-file">Select file<input type="file" id="file"></span>
+                                    </span>
+                                </div>
+                                <!--<input type="file" class="form-control file" id="inputFile" >-->
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <label class="pull-right">
+                                <input type="checkbox" id="addContinue">
+                                이어서 계속 추가
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-blue" id="btn_addGroup">조직 추가</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 추가 및 수정 모달 끝 -->
+
+    <!-- 그룹 삭제 모달 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="delGroup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h5 class="modal-title" ><strong>하위 조직 삭제</strong></h5>
+                </div>
+                <div class="modal-body del-org middle">
+                    조직을 삭제하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-danger btn-sm btn-long" id="btn_del">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 조직 삭제 모들 -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="delOrg">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h5 class="modal-title" ><strong>조직 삭제</strong></h5>
+                </div>
+                <div class="modal-body del-org middle">
+                    <span id="label"></span> 조직도를 삭제하시겠습니까?<br><br>
+                    조직도 정보와 모든 하위 조직이 함께 삭제됩니다.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-danger btn-sm btn-long" id="btn_del">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  </body>
+</html>

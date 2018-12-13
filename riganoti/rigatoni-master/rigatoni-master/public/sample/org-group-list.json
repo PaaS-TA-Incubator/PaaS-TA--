@@ -1,0 +1,28 @@
+{
+  "groups": [
+    {
+      "id": "111111111",
+"org_id": "2222",
+"parent_id": "00000",
+      "label": "조직(그룹)1",
+      "desc": "조직(그룹)1 입니다.",
+      "thumb_img_name": "썸네일_이미지.png",
+      "thumb_img_path": "http://cdn.1001freedownloads.com/icon/thumb/318343/people-icon.png",
+      "url": "http://www.sample.com",
+      "created": "2015-11-01",
+      "updated": "2015-11-01"
+    }, 
+    {
+      "id": "22222222",
+"org_id": "2222",
+"parent_id": "11111111",
+      "label": "조직(그룹)2",
+      "desc": "조직(그룹)2 입니다.",
+      "thumb_img_name": "썸네일_이미지2.png",
+      "thumb_img_path": "http://cdn.1001freedownloads.com/icon/thumb/318343/people-icon.png",
+      "url": "http://www.sample1.com",
+      "created": "2015-11-01",
+      "updated": "2015-11-01"
+    }
+  ]
+}

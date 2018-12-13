@@ -1,0 +1,163 @@
+
+@import url(https://fonts.googleapis.com/earlyaccess/jejuhallasan.css);
+
+
+.sidenav {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #ffffff;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+	border-right: 2px solid;
+	border-color: #18b6a3;
+	margin-bottom: -60px;
+}
+.myop{
+	margin-top: 10px;
+	margin-left: 25px;
+	color: #18b6a3;
+}
+.m1{
+	font-size: 25px;
+}
+.m2{
+	font-size: 20px;
+	padding-top: 5px;
+}
+.logout{
+	padding: 0 !important;
+	font-size: 18px !important;
+	position: absolute;
+	bottom: 100px;
+	left: 25px;
+}
+
+body{
+	margin:0;
+}
+.voice {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+.swal-footer {
+	text-align: center !important;
+}
+.voice-button{
+	width: 80px;
+	height: 80px;
+	background: #18b6a3 url(/assets/images/microphone.png) no-repeat;
+	background-position: center center;
+	background-size: 50px;
+	border-radius: 50%;
+	border-bottom: 4px solid;
+	border-color:#094841;
+	box-shadow: 2px 4px #898989;
+}
+
+.voice-button:focus {
+	outline:0;
+}
+.sidenav:focus {
+	outline:0;
+}
+.closebtn:focus{
+	outline:0;
+}
+
+.voice-button:hover{
+	cursor: pointer;
+	background: #139182 url(/assets/images/microphone.png) no-repeat;
+	background-position: center center;
+	background-size: 50px;
+}
+
+.wrapper.overlay {
+    position:relative;
+}
+.wrapper.overlay:before {
+    content:'';
+    background:black;
+    opacity:.5;
+    position:absolute;
+    top:0;
+	right:0;
+	height: 100%;
+	width: 100%;
+	margin-left:250px;
+    z-index:1;
+}
+.warn {
+	padding: 0 !important;
+	position: absolute;
+	bottom: 180px;
+	left: 25px;
+	font-size: 12px !important;
+	color: yellowgreen;
+}
+.navbar {
+	height: 60px;
+	/* background-color: #18b6a3; */
+	background-color: #ffffff;
+	border-bottom: 2px solid;
+	border-color: #18b6a3;
+}
+
+.navbar-brand { 
+	font-family: 'Jeju Hallasan', serif;
+	position: absolute;
+	width: 100px;
+	left: 50%;
+	margin-left: -50px;
+	color:  #18b6a3;
+	text-decoration: none;
+	text-align: center;
+}
+
+.sidenav a {
+	padding: 8px 8px 8px 32px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #909090;
+	display: block;
+	transition: 0.3s;
+}
+
+.sidenav a:hover {
+	color: #18b6a3;
+}
+
+.sidenav .closebtn {
+	position: absolute;
+	top: 0;
+	right: 25px;
+	font-size: 36px;
+	margin-left: 50px;
+}
+
+.ham {
+    width: 27px;
+    height: 3px;
+    background-color:  #18b6a3;
+    margin: 7px 0;
+}
+
+.hamburger {
+	position: absolute;
+	top: 10px;
+	left: 25px;
+	font-size:25px;
+	cursor:pointer;
+	text-align: center;
+}
+
+.map {
+	width: 100%;
+	height: 100%;
+	margin-bottom: -60px;
+}

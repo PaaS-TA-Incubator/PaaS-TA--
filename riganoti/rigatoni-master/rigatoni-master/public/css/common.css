@@ -1,0 +1,35 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+body{
+    font-family: 'Nanum Gothic';
+    height:100vh;
+}
+
+.bg-blue{
+    background-color: #5e87b0;
+}
+
+.bg-darkgray{
+    background-color:#B9B9B9;
+}
+
+.btn-blue{
+    color:#FFFFFF;
+    background-color: #5e87b0;
+}
+
+.btn-long  {
+    width: 100px;
+}
+
+.margin-side-no{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.middle{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+

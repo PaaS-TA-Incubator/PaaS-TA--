@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="./css/theme.css" type="text/css">
+  <script language="javascript" type="text/javascript" src="./js/particles.js"></script>
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"></script>
+  <div id="particles-js"></div>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <div class="mform">
+    <div class="container">
+      <h1 class="top-banner inner-center"> 대동.AI </h1>
+      <div class="inner-center ttext"> 사용자 맞춤형 지도 </div>
+      <form class="iform" action="/" method="get">
+        <br>
+        <div class="ltext"> 이름 </div>
+        <input class="iinput" type="text" id="name" name="name" value="">
+        <br>
+        <br>
+        <div class="ltext"> 성별 </div>
+        <input type="radio" id="radio1" name="gender" value="m" checked="">
+        <label class="two-radio" for="radio1">남성</label>
+        <input type="radio" id="radio2" name="gender" value="w">
+        <label for="radio2" class="two-radio">여성</label>
+        <br>
+        <br>
+        <div class="ltext"> 나이 </div>
+        <select name="sab" class="tinput" id="age-range" autocomplete="off" required=""> </select>
+        <br>
+        <br>
+        <div class="ltext"> 이동수단 </div>
+        <input type="radio" id="radio4" name="mobile" value="car" checked="">
+        <label class="three-radio" for="radio4">자가용</label>
+        <input type="radio" id="radio5" name="mobile" value="sub">
+        <label class="three-radio" for="radio5">대중교통</label>
+        <input type="radio" id="radio3" name="mobile" value="byc">
+        <label class="three-radio" for="radio3">자전거</label>
+        <br>
+        <br>
+        <br>
+        <button class="ghost-button"> 시작 </button>
+      </form>
+    </div>
+  </div>
+  <script>
+    var $select = $("#age-range");
+    for (i = 18; i <= 80; i++) {
+      $select.append($('<option class="option"></option>').val(i).html(i))
+    }
+
+    // focus input
+    document.getElementById("name").focus();
+    
+  </script>
+  <script>
+    particlesJS("particles-js", { "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#ffffff" }, "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 }, "image": { "src": "img/github.svg", "width": 100, "height": 100 } }, "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } }, "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } }, "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } } }, "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false, "mode": "bubble" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } } }, "retina_detect": false }); var count_particles, stats, update; stats = new Stats; stats.setMode(0); stats.domElement.style.position = 'absolute'; stats.domElement.style.left = '0px'; stats.domElement.style.top = '0px'; document.body.appendChild(stats.domElement); count_particles = document.querySelector('.js-count-particles'); update = function () { stats.begin(); stats.end(); if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) { count_particles.innerText = window.pJSDom[0].pJS.particles.array.length; } requestAnimationFrame(update); }; requestAnimationFrame(update);;
+  </script>
+</body>
+
+</html>

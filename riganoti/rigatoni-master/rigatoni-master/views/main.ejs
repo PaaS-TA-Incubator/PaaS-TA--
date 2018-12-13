@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="./css/styles.css" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+  <!-- 지도 api 사용하기 위에서는 아래 src에 api키 발급 받은 후 도메인에 맞게 설정 !-->
+  <script type="text/javascript" src="****"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/speechkitt.min.js"></script>
+  <script type="text/javascript" src="/js/xml2json.min.js"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support -->
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+</head>
+
+<body class="wrapper" style="height: 100%;">
+
+
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="myop">
+      <div class="m1">어떤 질문에<br>답을 할 수 있나요?</div>
+      <br>
+      <div class="m2"> - 전기차 충전소 보여줘</div>
+      <div class="m2"> - 오늘 날씨 어때?</div>
+      <div class="m2"> - 갈만한 관광지 찾아줘</div>
+      <div class="m2"> - 현재 교통상황 어때?</div>
+      <div class="m2"> - 기타 여러가지</div>
+    </div>
+    <br>
+    <br>
+    <div class="warn">
+      ※ 알림 <br>
+      마이크 권한을 활성화 시켜야 합니다.<br>
+      PC, 모바일 크롬 브라우저에서 실행 가능합니다.<br>
+      beta 버전에서는 내 위치가 시뮬레이션 됩니다.
+    </div>
+    <a href="/submit" class="logout" style="margin-top:100px;">로그아웃</a>
+  </div>
+
+  <div class="test-button" style="float:right;">
+    <input type="text" name="test-input" id="test-input">
+    <button onclick="testCompute()">RUN</button>
+  </div>
+  <nav class="navbar navbar-light sticky-top">
+    <h1 class="navbar-brand">대동.AI</h1>
+  </nav>
+  <!--
+  <button onclick="getLocation()">Run</button>
+  <button onclick="carShow()">Show</button>
+
+   내 위치 표시 
+  <p id="myloc" style="display:none;"></p>
+-->
+  <!-- 지도 -->
+  <div id="map" class="map"></div>
+
+  <span class="hamburger" style="" onclick="openNav()">
+    <div class="ham"></div>
+    <div class="ham"></div>
+    <div class="ham"></div>
+  </span>
+
+  <!--
+  <div class="voice">
+    <button class="voice-button" onclick="listenVoice()"></button>
+  </div>
+-->
+
+  <script>
+
+  swal("오늘도 기분 좋은 날이에요!");
+  $('.test-button').hide();
+
+  function testCompute(){
+    compute($("#test-input").val());
+  }
+
+    function compute(word){
+      if (word.indexOf("전기차") > -1) {
+        swal("전기차 공공충전소를 보여드릴게요.");
+        electricMarker();
+      } else if (word.indexOf("교통") > -1) {
+        swal("지도에 현재 교통상황을 표시합니다.");
+        showTraffic(true);
+      } else if (word.indexOf("관광") > -1) {
+        swal("갈만한 관광지를 찾아봤어요.");
+        visiting()
+      }else {
+        // Adam 실행
+        fetch("/ai?text="+word).then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          swal(data.result);
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+      SpeechKITT.abortRecognition()
+    }
+
+    if (annyang) {
+      // Add our commands to annyang
+      annyang.addCommands({
+        '*word': function (word) {
+          compute(word);
+        }
+      });
+
+      annyang.setLanguage("ko");
+      // Tell KITT to use annyang
+      SpeechKITT.annyang();
+
+      // Define a stylesheet for KITT to use
+      SpeechKITT.setStylesheet('/css/flat.css');
+
+      SpeechKITT.setInstructionsText("무엇을 도와드릴까요?")
+
+      // Render KITT's interface
+      SpeechKITT.vroom();
+    }
+  </script>
+
+  <script>
+
+
+
+    $(document).ready(function () {
+      carSetting();
+      getLocation();
+    });
+
+
+    function openNav() {
+      $('.wrapper').addClass('overlay');
+      document.getElementById("mySidenav").style.width = "300px";
+      SpeechKITT.hide();
+    }
+
+    function closeNav() {
+      $('.wrapper').removeClass('overlay');
+      document.getElementById("mySidenav").style.width = "0";
+      SpeechKITT.show();
+    }
+
+    function visiting() {
+      var position = {};
+      position.coords = {};
+      [position.coords.latitude, position.coords.longitude] = gPosition;
+	  //영문 관광지 정보 api는 data.go.kr에서 발급 받은 후 아래 fetch안에 ***위치에 설정
+      fetch("***"+position.coords.longitude+"&mapY="+position.coords.latitude+"&radius=1000").then(function (response) {
+        response.text().then(function(text){
+          var x2js = new X2JS();
+          var jsonObj = x2js.xml_str2json(text);
+          console.log(jsonObj);
+          console.log(jsonObj.response.body.items.item[0]);
+
+          var markers = []
+          for (var i = 0; i < jsonObj.response.body.items.item.length; i++) {
+            var item = jsonObj.response.body.items.item[i];
+            var elecaddr = new naver.maps.Point(item.mapx ,item.mapy);
+            var marker = new naver.maps.Marker({
+              position: elecaddr,
+              map: map,
+              icon: {
+                url: './assets/images/royal.png',
+                size: new naver.maps.Size(50, 52),
+                origin: new naver.maps.Point(0, 0),
+                anchor: new naver.maps.Point(25, 26)
+              }
+            });
+            markers.push(marker);
+            showElectricInfo(marker, "<h4>"+item.title+"</h4> <p style='font-size:15px'>"+item.addr1+"</p>","#2db400");
+          }
+
+        })
+        }).then(function (data) {title
+          // data
+        }).catch(function (err) {
+          console.log(err);
+        });
+    }
+
+
+    function listenVoice() {
+      if (annyang) {
+        var commands = {
+          '전기차': function () {
+            showTraffic(true);
+            electricMarker();
+          }
+        };
+
+        annyang.setLanguage("ko");
+        // Add our commands to annyang
+        annyang.addCommands(commands);
+        // Start listening. You can call this here, or attach this call to an event, button, etc.
+        annyang.start();
+      }
+    }
+
+  </script>
+
+  <script>
+
+    var map; // 전역 지도 객체
+
+    // 위치
+    var 국회도서관 = [37.5320453, 126.9141499];
+    var 종로 = [37.559352, 127.002350];
+    var gPosition;
+    var gSimulate = false;
+
+    // 자동차(전기차) 운전하는 사람 데모
+    function carSetting() {
+      gPosition = 종로;
+      gSimulate = true;
+    }
+
+    function carShow() {
+      showTraffic(true);
+      electricMarker();
+    }
+
+    // redirect to https page
+    if (location.protocol != 'https:') {
+      location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    }
+
+    var x = document.getElementById("myloc");
+
+    // 현재 위치를 가지고 온다
+    function getLocation() {
+      simulate = gSimulate;
+      if (simulate) {
+        var position = {};
+        position.coords = {};
+        [position.coords.latitude, position.coords.longitude] = gPosition;
+        showPosition(position);
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+    }
+
+    // long = x, lat = y
+    function showPosition(position) {
+      showMap(position.coords.longitude, position.coords.latitude);
+    }
+
+    function showMyPos() {
+      var myaddr = new naver.maps.Point(gPosition[1], gPosition[0]); // 내 위치 포인트
+
+      map.setCenter(myaddr); // 지도 중심 위치 지정
+
+      // 내 위치 마커 설정
+      var marker = new naver.maps.Marker({
+        position: myaddr,
+        map: map
+      });
+
+
+      showInfo(marker, "<div> <font size='2'>내위치</font> </div>");
+
+    }
+
+    function showMap(x, y) {
+      var posX = x;
+      var posY = y;
+
+
+      // 지도 초기 설정
+      map = new naver.maps.Map('map', {
+        zoom: 9, //지도의 초기 줌 레벨
+        minZoom: 1, //지도의 최소 줌 레벨
+        zoomControl: false, //줌 컨트롤의 표시 여부
+        scaleControl: false,
+        logoControl: false,
+        mapDataControl: false,
+        zoomControlOptions: { //줌 컨트롤의 옵션
+          position: naver.maps.Position.TOP_RIGHT
+        }
+      });
+
+      showMyPos();
+    }
+
+    function showElectricInfo(marker, content, borderColor) {
+      var infowindow = new naver.maps.InfoWindow({
+        content: "<div style='margin-left: 5px; margin-right: 5px;'>" + content + "</div>",
+        maxWidth: 150,
+        backgroundColor: "#ffffff",
+        borderColor: borderColor,
+        borderWidth: 2,
+        anchorSize: new naver.maps.Size(10, 30),
+        anchorSkew: true,
+        anchorColor: "#ffffff",
+        pixelOffset: new naver.maps.Point(20, -20)
+      });
+
+      naver.maps.Event.addListener(marker, "click", function (e) {
+        if (infowindow.getMap()) {
+          infowindow.close();
+        } else {
+          infowindow.open(map, marker);
+        }
+      });
+
+      infowindow.open(map, marker);
+    }
+
+    function showInfo(marker, content) {
+
+      var infowindow = new naver.maps.InfoWindow({
+        content: content
+      });
+
+      naver.maps.Event.addListener(marker, "click", function (e) {
+        if (infowindow.getMap()) {
+          infowindow.close();
+        } else {
+          infowindow.open(map, marker);
+        }
+      });
+
+      infowindow.open(map, marker);
+    }
+
+    // 현재 지도 범위의 마커만 보이게 함
+    function updateMarkers(markers) {
+      var mapBounds = map.getBounds();
+      var marker, position;
+
+      for (var i = 0; i < markers.length; i++) {
+
+        marker = markers[i]
+        position = marker.getPosition();
+
+        if (mapBounds.hasLatLng(position)) {
+          showMarker(marker);
+        } else {
+          hideMarker(marker);
+        }
+      }
+    }
+
+    // 마커 보이기
+    function showMarker(marker) {
+      marker.setMap(map);
+    }
+
+    // 마커 숨기기
+    function hideMarker(marker) {
+      marker.setMap(null);
+    }
+
+    // 실시간 교통 상황 보이기
+    function showTraffic(show = true) {
+      var trafficLayer = new naver.maps.TrafficLayer({
+        interval: 2000 // 2초마다 새로고침
+      });
+      if (show) {
+        trafficLayer.setMap(map);
+      } else {
+        trafficLayer.setMap(map);
+      }
+    }
+
+    function electricMarker() {
+      var markers = []
+        <% for (var i = 0; i < data.item.length; i++) {%>
+      var str = "<%= data.item[i].addrDoro %>"
+          if (str.substring(0, 5) == "서울특별시") {
+            var elecaddr = new naver.maps.Point(<%= data.item[i].lng %>, <%= data.item[i].lat %>);
+            var marker = new naver.maps.Marker({
+              position: elecaddr,
+              map: map,
+              icon: {
+                url: './assets/images/flash.png',
+                size: new naver.maps.Size(50, 52),
+                origin: new naver.maps.Point(0, 0),
+                anchor: new naver.maps.Point(25, 26)
+              }
+            });
+            markers.push(marker);
+            showElectricInfo(marker, "<h4><%= data.item[i].statNm %></h4> <p style='font-size:13px'><%= data.item[i].useTime %></p>","#E5E500");
+          }
+    <% } %>
+        updateMarkers(markers);
+      showMyPos();
+    }
+
+
+
+  // var myaddress = '불정로 6';// 도로명 주소나 지번 주소만 가능 (건물명 불가!!!!)
+  // naver.maps.Service.geocode({address: myaddress}, function(status, response) {
+  //     if (status !== naver.maps.Service.Status.OK) {
+  //         return alert(myaddress + '의 검색 결과가 없거나 기타 네트워크 에러');
+  //     }
+  //     var result = response.result;
+  //     // 검색 결과 갯수: result.total
+  //     // 첫번째 결과 결과 주소: result.items[0].address
+  //     // 첫번째 검색 결과 좌표: result.items[0].point.y, result.items[0].point.x
+
+  //     //var myaddr = new naver.maps.Point(result.items[0].point.x, result.items[0].point.y);
+  //     // var myaddr = new naver.maps.Point(posX, posY);
+  //     // map.setCenter(myaddr); // 검색된 좌표로 지도 이동
+  //     // 마커 표시
+  //     var marker = new naver.maps.Marker({
+  //       position: myaddr,
+  //       map: map
+  //     });
+  //     // 마커 클릭 이벤트 처리
+  //     naver.maps.Event.addListener(marker, "click", function(e) {
+  //       if (infowindow.getMap()) {
+  //           infowindow.close();
+  //       } else {
+  //           infowindow.open(map, marker);
+  //       }
+  //     });
+  //     // 마크 클릭시 인포윈도우 오픈
+  //     var infowindow = new naver.maps.InfoWindow({
+  //         content: '<h4> [네이버 개발자센터]</h4><a href="https://developers.naver.com" target="_blank"><img src="https://developers.naver.com/inc/devcenter/images/nd_img.png"></a>'
+  //     });
+  // });
+  </script>
+  <!--
+  <ul>
+  <% for(var i=0; i<data.item.length; i++) {%>
+    <li><%= JSON.stringify(data.item[i]) %></li>
+  <% } %>
+  </ul>
+  -->
+</body>
+
+</html>

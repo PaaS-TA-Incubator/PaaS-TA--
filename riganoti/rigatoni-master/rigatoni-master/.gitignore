@@ -1,0 +1,10 @@
+.classpath
+.project
+.settings
+.springBeans
+.gradle
+build
+node_modules
+npm-debug.log
+
+\.DS_Store

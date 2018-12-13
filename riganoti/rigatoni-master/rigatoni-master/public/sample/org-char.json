@@ -1,0 +1,96 @@
+{
+  "org": {
+    "id": 2,
+    "label": "test3-2 org",
+    "desc": "test3-2 org desc",
+    "url": "test3-2.org.home.orl",
+    "created": "2015-11-12T02:08:43.000Z",
+    "modified": "2015-11-25T07:49:36.000Z"
+  },
+  "groups": [
+    {
+      "id": 1,
+      "org_id": 2,
+      "parent_id": null,
+      "label": "2221",
+      "desc": "2231",
+      "thumb_img_name": "2241",
+      "thumb_img_path": "2251",
+      "url": "2261",
+      "created": "2015-11-12T04:39:33.000Z",
+      "modified": "2015-11-12T04:40:48.000Z"
+    },
+    {
+      "id": 2,
+      "org_id": 2,
+      "parent_id": 1,
+      "label": "11",
+      "desc": "11",
+      "thumb_img_name": "111",
+      "thumb_img_path": "1111",
+      "url": "1111",
+      "created": "2015-11-12T04:39:53.000Z",
+      "modified": "2015-11-12T04:39:53.000Z"
+    },
+    {
+      "id": 3,
+      "org_id": 2,
+      "parent_id": null,
+      "label": "그룹이름",
+      "desc": "그룹설명",
+      "thumb_img_name": "썸네일 이름",
+      "thumb_img_path": "",
+      "url": "그룹 홈페이지 url",
+      "created": "2015-11-12T04:49:49.000Z",
+      "modified": "2015-11-12T05:19:30.000Z"
+    },
+    {
+      "id": 4,
+      "org_id": 2,
+      "parent_id": 1,
+      "label": "11",
+      "desc": "11",
+      "thumb_img_name": "111",
+      "thumb_img_path": "1111",
+      "url": "1111",
+      "created": "2015-11-12T04:49:50.000Z",
+      "modified": "2015-11-12T04:49:50.000Z"
+    },
+    {
+      "id": 5,
+      "org_id": 2,
+      "parent_id": 1,
+      "label": "11",
+      "desc": "11",
+      "thumb_img_name": "111",
+      "thumb_img_path": "1111",
+      "url": "1111",
+      "created": "2015-11-12T04:49:50.000Z",
+      "modified": "2015-11-12T04:49:50.000Z"
+    },
+    {
+      "id": 6,
+      "org_id": 2,
+      "parent_id": null,
+      "label": "그룹이름",
+      "desc": "그룹설명",
+      "thumb_img_name": "썸네일 이름",
+      "thumb_img_path": "",
+      "url": "그룹 홈페이지 url",
+      "created": "2015-11-12T05:18:59.000Z",
+      "modified": "2015-11-12T05:18:59.000Z"
+    },
+    {
+      "id": 7,
+      "org_id": 2,
+      "parent_id": 1,
+      "label": "그룹1",
+      "desc": "그룹설명",
+      "thumb_img_name": "썸네일 name",
+      "thumb_img_path": "썸네일 path",
+      "url": "그룹 홈페이지 url",
+      "created": "2015-11-13T07:51:26.000Z",
+      "modified": "2015-11-13T07:51:26.000Z"
+    }
+  ]
+}
