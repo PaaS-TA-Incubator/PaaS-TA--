@@ -1,0 +1,142 @@
+section{
+    padding-top: 6rem;
+    padding-bottom: 1rem;
+    background-color: white;
+}
+
+/* category */
+.category_item{
+    margin-bottom: 2rem;
+}
+
+.category_icon{
+    margin-bottom: 1rem;
+}
+
+.category_link{
+    color: black;
+    text-decoration: none !important;
+}
+
+/* question */
+#question{
+    margin-top: 4rem;
+    padding-bottom: 5rem;
+}
+
+/* topic-list */
+#topic-list {
+    margin: 5rem 7rem 0;
+    padding-top: 5rem;
+}
+
+
+#topic-list-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+@media screen and (max-width: 768px) {
+    #topic-list-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #topic-list-title {
+        font-size: 2.5rem;
+    }
+}
+
+.topic-list-content {
+    color: black;
+    text-decoration: none !important;
+    font-size: 1.1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .topic-list-content {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .topic-list-content {
+        font-size: 2.5rem;
+    }
+}
+
+/* topic */
+#topics {
+    margin: 0 7rem 7rem;
+    padding-top: 3rem;
+}
+
+.topic {
+    padding-top: 0.8rem;
+    padding-bottom: 1.2rem;
+}
+
+.topic-title{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.1rem;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+@media screen and (max-width: 768px) {
+    .topic-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .topic-title {
+        font-size: 2.5rem;
+    }
+}
+
+.topic-content{
+    font-size: 1.1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .topic-content {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .topic-content {
+        font-size: 2.5rem;
+    }
+}
+
+.topic-content img {
+    width:40%;
+}
+
+@media screen and (max-width: 768px) {
+    .topic-content img {
+        width:90%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .topic-content img {
+        width:90%;
+    }
+}
+
+/* plus-friend */
+#plus-friend-modal-box{
+    width: 25rem;
+    padding: 1rem;
+}

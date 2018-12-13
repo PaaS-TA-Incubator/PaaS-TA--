@@ -1,0 +1,187 @@
+{% extends "today_topic/base.html" %}
+
+{% block css %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/index_style.css" %}">
+{% endblock %}
+
+{% block header %}
+    <!-- Header -->
+    <header class="masthead">
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-heading text-uppercase">오늘의 토픽</div>
+                <div class="intro-lead-in">카카오톡에서도 오늘의 주요 뉴스를 확인해보세요!</div>
+                <a class="btn btn-primary btn-xl text-uppercase" href="javascript:addPlusFriend()">플러스친구 추가하기</a>
+            </div>
+        </div>
+    </header><!-- /Header -->
+{% endblock %}
+
+{% block contents %}
+    <!-- Category -->
+    <section id="category">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading text-uppercase">오늘의 주요 토픽 리스트</h2>
+                    <h3 class="section-subheading text-muted" id="currentTime"></h3>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='all' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-home fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='all' %}">모든 토픽</a></h4>
+                </div>
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='entertainment' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-grin-squint fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='entertainment' %}">엔터테인먼트</a></h4>
+                </div>
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='politics' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-balance-scale fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='politics' %}">정치</a></h4>
+                </div>
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='economics' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-hand-holding-usd fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='economics' %}">경제</a></h4>
+                </div>
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='society' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-people-carry fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='society' %}">사회</a></h4>
+                </div>
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='it' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='it' %}">IT</a></h4>
+                </div>
+                <div class="col-md-3 category_item">
+                <span class="fa-stack fa-4x category_icon">
+                    <a class="category_link" href="{% url 'site:detail' category='world' %}">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-globe-americas fa-stack-1x fa-inverse"></i>
+                    </a>
+                </span>
+                    <h4 class="service-heading"><a class="category_link" href="{% url 'site:detail' category='world' %}">세계</a></h4>
+                </div>
+            </div>
+        </div>
+    </section><!-- /Category -->
+
+    <!-- Question -->
+    <section id="question">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="section-heading text-uppercase">인공지능에게 물어보기</h2>
+                </div>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" id="question_text"
+                           placeholder="ex) 오바마의 어머니가 누구야?  or  아기는 어떻게 생겨?"
+                           aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <!-- Answer Request Button -->
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" id="request_btn" onclick="request_answer()">
+                            물어보기
+                        </button>
+                    </div><!-- Answer Request Button -->
+                </div>
+            </div>
+        </div>
+    </section><!-- Question -->
+
+    {% if topics is not None %}
+        <!-- Topic list -->
+        <section id="topic-list">
+            <div id="topic-list-title">토픽 목록</div>
+            {% for topic in topics %}
+                <hr>
+                <a class="js-scroll-trigger topic-list-content" href="#title_{{ forloop.counter }}">{{ topic.title }}</a>
+            {% endfor %}
+            <hr>
+        </section><!-- /Topic list -->
+
+        <!-- Topics -->
+        <section id="topics">
+            {% for topic in topics %}
+                <div class="topic" id="title_{{ forloop.counter }}">
+                    <div class="topic-title">{{ topic.title }}</div>
+                    <div class="topic-content pl-2 pb-3">{{ topic.date }}</div>
+                    <div class="topic-content">{{ topic.content_html | safe }}</div>
+                    <br>
+                    <a class="topic-content pl-3 font-weight-bold js-scroll-trigger" href="#topic-list">페이지 상단으로</a>
+                    <a class="topic-content pl-3 font-weight-bold" href="{{ topic.url }}">기사 원문 보기</a>
+                </div>
+                {% if not forloop.last %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+        </section><!-- /Topics -->
+        <script>
+            location.href='#topic-list';
+        </script>
+    {% endif %}
+
+    <!-- Answer Modal -->
+    <div class="modal fade" id="answer_modal" tabindex="-1" role="dialog"
+         aria-labelledby="answer_modal_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="answer_modal_label">검색 결과</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" id="answer">
+                    검색중 ...
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- Answer Modal -->
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <!-- Vue.js && axios -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static "js/index.js" %}"></script>
+{% endblock %}

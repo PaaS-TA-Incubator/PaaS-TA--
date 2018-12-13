@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}오늘의 토픽{% endblock %}</title>
+
+    {% block css %}
+        {% load staticfiles %}
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
+
+        <!-- Custom fonts for this template -->
+        <link rel="stylesheet" type="text/css" href="{% static "vendor/fontawesome-free/css/all.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+        <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Kaushan+Script'>
+        <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic'>
+        <link rel="stylesheet" type="text/css" href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700'>
+
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" type="text/css" href="{% static "css/agency.min.css" %}">
+    {% endblock %}
+</head>
+<body id="page-top">
+<header>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'site:index' %}">Today's Topic</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'site:index' %}">홈</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#category">오늘의 주요 토픽</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#question">인공지능에게 물어보기</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:addPlusFriend()">플러스친구 추가하기</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav><!-- /Navigation -->
+
+    {% block header %}{% endblock %}
+    {% block content %}{% endblock %}
+</header>
+<main>
+    {% block contents %}{% endblock %}
+    {% block footer %}
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 mx-auto">
+                        <!-- Icons -->
+                        <ul class="list-inline social-buttons mb-2">
+                            <!-- Facebook -->
+                            <li class="list-inline-item">
+                                <a href="https://www.facebook.com/cupjoo">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <!-- GitHub -->
+                            <li class="list-inline-item">
+                                <a href="https://github.com/cau-boys/today_topic">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </li>
+                            <!-- LinkedIn -->
+                            <li class="list-inline-item">
+                                <a href="http://cupjoo.tistory.com/">
+                                    <i class="fab fa-blogger-b"></i>
+                                </a>
+                            </li>
+                        </ul><!-- /Icons -->
+                        <!-- Copyright -->
+                        <p class="copyright text-muted">
+                            Copyright 2018 &copy; <a href="https://github.com/cau-boys/today_topic">CAU-Boys</a>
+                        </p><!-- /Copyright -->
+                    </div>
+                </div>
+            </div>
+        </footer><!-- /Footer -->
+    {% endblock %}
+</main>
+
+{% block js %}
+    {% load staticfiles %}
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="{% static "vendor/jquery-easing/jquery.easing.min.js" %}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static "js/agency.js" %}"></script>
+
+    <!-- Kakao Plus Friends API -->
+    <script src="http://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script src="{% static "js/kakao_api.js" %}"></script>
+{% endblock %}
+</body>
+</html>
