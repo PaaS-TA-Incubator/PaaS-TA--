@@ -1,0 +1,17 @@
+
+button {
+  margin: 0 auto;
+  display: block;
+  font-size: 1.1rem;
+  width: 170px;
+  line-height: 2;
+  margin-top: 30px;
+}
+
+#speech {
+  font-weight: bold;
+}
+
+.hvr-ripple-out {
+  
+}

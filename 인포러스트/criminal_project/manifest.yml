@@ -1,0 +1,6 @@
+---
+applications:
+- name: safety_app
+  buildpack: python_buildpack
+  memory: 1024M
+  instances: 1

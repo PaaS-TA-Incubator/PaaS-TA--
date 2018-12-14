@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>LOGIN</title>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="page-header">
+          <!-- <h2>심플한 로그인 폼</h2> -->
+        </div>
+        <div class="col-md-3">
+          <div class="login-box well">
+            <legend>로그인</legend>
+            <div class="form-group">
+                <label for="id">ID</label>
+                <input name="id" value='' id="id" placeholder="ID" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input name="password" id="password" value='' placeholder="Password" type="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button id="button" onclick='loginCheck()'>로그인</button>
+
+            </div>
+            <hr />
+            <div class="form-group">
+                <a href="index.html" class="btn btn-default btn-block m-t-md"> 회원가입</a>
+            </div>
+        <div id = "msg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    function loginCheck() {
+      console.log('click');
+
+      var id = $("#id").val();
+      var password=$("#password").val();
+
+      console.log("id:"+id);
+      console.log("pass:"+password);
+
+      $.ajax({
+        url : 'check_info',
+        type : 'POST',
+        data:{"id" :id, "password":password },
+        success:function(result){
+            console.log(result['result']);
+          location.href='/';
+
+        }
+        // , error : function(result){
+        //   alert('ID가 중복입니다. 다른 ID로 회원가입해주세요.')
+        //   location.href='/login'
+        // }
+      });
+
+    }
+
+
+
+  </script>
+
+  </body>
+  </html>

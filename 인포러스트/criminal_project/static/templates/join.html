@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>form 태그</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+<!-- 사용자의 데이터를 입력 받아서 , 특정 작업을 할 때 사용 -->
+    <!-- <form action="받은 데이터를 처리할 페이지의 경로(특정 작업을 하는 위치)"
+        method="get|post" 생략하면 get방식></form>
+    get 방식 : 정보를 헤더에 담아서 보낸다
+            주소표시줄에 정보가 보인다
+            보안에 취약하다
+            적은 양의 데이터 처리
+            속도가 빠르다
+    post 방식 : 정보를 바디에 담아서 보낸다
+                주소 표시줄에 정보가 안보인다
+                보안에 덜 취약하다
+                많은 양의 데이터 처리
+                속도가 상대적으로 느리다
+    name=자바 스크립트나 css에서 호출할때 사용할 이름
+    enctype=file upload 할 때 사용한다>
+    form elements : <input type> , <select> , <textarea> , <button> , <datalist>
+    </form>     action = "ex15.html" method="get"
+    -->
+    <!-- <form>
+        <fieldset style="width:300px">
+            <legend>Form 요소</legend> -->
+            <p>아이디 : <input type="" id="id" name="id"placeholder="아이디 입력"/></p>
+            <p>비밀번호 : <input type="password" id="password" password ="password" name="password"placeholder="비밀번호"/></p>
+            <p>긴급연락망 : <input type="tel" id='tel' tel = "tel" name="tel" placeholder="전화번호 입력"/></p>
+            <p>카테고리 : <select id='category' name="category">
+                        <option>선택하세요</option>
+                        <option value="police" name ="police">경찰</option>
+                        <option value="mom">엄마</option>
+                        <option value="lover">애인</option>
+                    </select>
+            </p>
+
+            <!-- <p><input type="submit" value="정보 보내기" onclick="자바스크립트함수"/></p> -->
+            <!-- <p></p> -->
+
+        <!-- </fieldset>
+    </form> -->
+    <button id="button" onclick='formCheck()'>회원 가입</button>
+
+<script>
+
+var id = '';
+var password = '';
+var tel = '';
+var category = '';
+
+// $("button").click({
+//       formCheck();
+//       // if (name.value == '' || name.value == null) {
+//       //   	alert('ID를 입력하세요');
+//       //   	focus.name;
+//   	  // return false;
+//       // }
+//   		// if (password.value == '' || password.value == null) {
+//   		// 	alert('비밀번호를 입력하세요');
+//   		// 	focus.password;
+//   		// 	return false;
+//   		// }
+//
+//
+//       console.log('click');
+//       // $.ajax({
+//       //   url:'regost',
+//       //   type:"POST",
+//       //   dataType:'json',
+//       //   data:{'id':id,'password':password,'category': category,'emergency':tel}
+//       //   success : function(data){
+//       //     console.log('dd');
+//       //   // document.getElementById("output").value = data;
+//       //   }
+//       // });
+//     });
+
+    function formCheck() {
+      console.log('click');
+
+      id = $("#id").val();
+      password=$("#password").val();
+      category = $("#category").val();
+      tel = $("#tel").val();
+      console.log("category: " + category);
+      console.log("id:"+id);
+      console.log("pass:"+password);
+
+      $.ajax({
+        url : 'regist',
+        type : 'POST',
+        data:{"id" :id, "password":password, "tel": tel,"category": category},
+        success:function(result){
+            console.log(result['result']);
+          location.href='/login';
+
+        }
+        ,error : function(result){
+          alert('ID가 중복입니다. 다른 ID로 회원가입해주세요.')
+          location.href='/join'
+        }
+      });
+
+    }
+
+    </script>
+
+  <!-- //
+  //
+  //
+  // var data={};
+  //
+  //
+  //   $ajax({
+  //     url : 'regost',
+  //     type : 'POST',
+  //     data:{"name" :name, "password":password, "tel": tel,"category": category},
+  //     success:function(result){
+  //       if(result =="OK"){
+  //         alert('로그인 성공');
+  //         location.href='a.html';
+  //       }
+  //       }
+  //     }
+  //   }) -->
+
+
+</body>
+
+</html>

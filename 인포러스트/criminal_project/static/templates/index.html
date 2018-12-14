@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>The prevention of crime</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="resources/css/web_speech_style.css">
+  <!-- Plugin CSS -->
+  <link href="resources/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="resources/css/creative.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="resources/css/map_style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+
+<body id="page-top">
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">The prevention of crime</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#visualization">Visualization</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h1 class="text-uppercase">
+              <strong>검색을 통해 확인하세요!</strong>
+            </h1>
+          <hr>
+        </div>
+        <div class="col-lg-8 mx-auto">
+          <p class="text-uppercase mb-5">당신의 지역을 검색하세요. cctv 위치와 안심지킴이집의 위치를 알려드립니다.<br> 도움을 요청하세요. 전화를 걸면 112 신고센터와 연결해드립니다.</p>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#services">Safety Zone</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="bg-primary" id="services">
+    <div class="container_option">
+      <div class="" style="margin-bottom:20px; text-align:center;">
+        <div>
+          <p id="speech_rec" class="phrase"></p>
+          <p id="speech_rec" class="result">Right or wrong?</p>
+          <output id="speech_rec" class="output">
+        </div>
+        <input id="rec" type="image" value="검색" onclick="searchSpeech()" src="resources/img/rec_gray.png">
+        <input id="address" type="text" class="controls" placeholder="Enter a location">
+        <input id="GPS" type="image" src="resources/img/gps_icon.png">
+      </div>
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <div id="map" style="width: 100%; height: 400px;"></div>
+            <div class="" id="infowindow-content">
+              <span id="place-name" class="title"></span><br>
+              Place ID :
+              <span id="place-id"></span><br>
+              <span id="place-address"></span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <input id="call" class="button btn btn-light btn-xl js-scroll-trigger" type="button" value="전화걸기" href="" style="margin-bottom: 10px;">
+          <div>
+            <a class="button btn btn-light btn-xl js-scroll-trigger" href="sms:112?body=도와주세요, 도움이 필요합니다" style="margin-bottom: 10px;">　문자　</a>
+          </div>
+          <div>
+            <a class="button btn btn-light btn-xl js-scroll-trigger" href="sms:112&body=도와주세요, 도움이 필요합니다">문자(IOS)</a>
+          </div>
+          <div>
+              <p id="speech" class="phrase_help"></p>
+              <p id="speech" class="result_help">Right or wrong?</p>
+              <p id="speech" class="output_help"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- <div id="map"></div> -->
+    <!-- <script>
+      var map;
+      function initMap() {
+        alert("hi");
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+    </script> -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="resources/vendor/jquery/jquery.min.js"></script>
+    <script src="resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="resources/vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="resources/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+
+    <!-- Custom scripts for this template -->
+    <script src="resources/js/creative.min.js"></script>
+    <script type="text/javascript" src="resources/js/map_google.js"></script>
+    <script type="text/javascript" src="resources/js/webspeech.js"></script>
+    <script type="text/javascript" src="resources/js/web_speech_search.js"></script>
+	<!--지도 api를 사용하기 위해서는 키를 발급 받은 후 아래 ***에 삽입!-->
+    <script async defer src="***"
+    type="text/javascript"></script>
+  </body>
+
+</html>
